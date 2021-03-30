@@ -1,10 +1,9 @@
 # Best practice to train model on images in Tensorflow
-> Common questions:
-> 
+> **Common questions**:
+>
 > Which is better ImageDataGenerator or tf.Data pipeline?
 > 
-> Is graph-type model any good in trying implement a deep learning model for image classificaton?
-> 
+> Is graph-type model any good in implementing a deep learning model for image classificaton?
 
 These questions are reason for me to try these 3 possible methods for the training of an image classification model.
 
@@ -14,15 +13,22 @@ In this program, I have tried to compare 3 different methods to execute the same
 3. with Autograph Model, instead of Eager Model
 
 ## Data and Model
+
 The data is `Fruits 360` from `https://www.kaggle.com/moltean/fruits`
 Amomg the 131 categories, I have used only 14. These classes are: 
 ```
 ['Avocado', 'Banana', 'Blueberry', 'Cauliflower', 'Corn', 'Guava', 'Kiwi', 'Mango', 'Orange', 'Pear', 'Pineapple', 'Pomegranate', 'Strawberry', 'Watermelon']
 ```
-I used 80% of the images for training, and 20% for validation in all three cases.
 
 `InceptionV3` model and its pretrained weights are used to create custom model with functional API.
-All methods are taking full advantage of CPU and GPU's parallel execution.
+
+**To have a fair test, I have done following**:
+
+    a. used 80% of the images for training, and 20% for validation in all three cases.
+    b. All methods are taking full advantage of CPU and GPU's parallel execution.
+    c. Model in all methods is printing the same information, 
+        i.e. after each batch (train loss, train accuracy) after each epoch (val loss, val accuracy)
+    d. Whole validation dataset and training dataset is being used.
 
 ## Physical Hardware
 All 3 models are run on `Ryzen5 4800HS` and `Nvidia RTX2060 Max-Q`
@@ -47,9 +53,9 @@ The model with ImageDataGenerator, the simplest to write, proformed relatively w
 ## Results
 | Method | Time taken(seconds) |
 |---|---|
-| ImageDataGenerator | 328 |
-| tf.Data | 320 |
-| Autograph Model | 511 |
+| ImageDataGenerator | 331 |
+| tf.Data | 321 |
+| Autograph Model | 543 |
 
 ## Conculsion
 In conculsion, I would recommend to use ImageDataGenerator to train models as it was only 2.5% slower than tf.Data method at the same it was easy to design.
